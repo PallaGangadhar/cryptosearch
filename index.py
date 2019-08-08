@@ -8,8 +8,8 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from graph import load_main_chart
-from app import app
 from cat_page import cat_tabs
+from app import app
 
 
 app.layout = html.Div([

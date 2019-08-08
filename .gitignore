@@ -1,0 +1,7 @@
+/env_crypto_dashboard
+.vscode
+.ipynb_checkpoints
+*.pkl
+*.ipynb
+__pycache__
+*.pyc

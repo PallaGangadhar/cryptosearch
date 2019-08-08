@@ -1,0 +1,30 @@
+body {
+    /* background: #313135; */
+    /* color: white; */
+}
+
+a {
+    color: rgb(50, 50, 50);;
+    /* color: white; */
+}
+
+.tab-container {
+    width: 60%;    
+}
+
+.dash-debug-menu {
+    display: none !important;
+}
+
+.dashboard-title {
+    padding: 40px;
+    /* background: aliceblue; */
+    background: #313135;
+    color: white;
+    text-align: center;    
+}
+
+.detailed-graph {
+    /* background: #313135;
+    color: white; */
+}

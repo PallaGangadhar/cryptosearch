@@ -155,6 +155,7 @@ def thumbnail_chart():
                             'showticklabels':False
                             },
                     yaxis={'title': '','showticklabels':False},
+                    showlegend=False,
                     height = 90,
                     width = 120,
                     plot_bgcolor = 'rgb(229, 236, 246)',

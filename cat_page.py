@@ -26,8 +26,8 @@ cat_tabs = html.Div(id='categoryMenu',
         dcc.Tabs(id="tabs", value='tab-1', children=[
                 dcc.Tab(label='At a glance', value='tab-1'),
                 dcc.Tab(label='Popular Series', value='tab-2'),
-                dcc.Tab(label='Latest Releases', value='tab-3'),
-                dcc.Tab(label='Tools', value='tab-4'),
+                dcc.Tab(label='Popular Categories', value='tab-3'),
+                dcc.Tab(label='Recent Series', value='tab-4'),
             ]
         ),
         html.Div(id='tabs-content')
@@ -46,15 +46,15 @@ tab_one_content = html.Div([
                 ],style={'margin-top':'3%'}),
 
                 html.Li([
-                    dcc.Link('10-Year Reasurey Constant Maturity Minus 3-Year Treaurey Constant Maturity', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Sample chart two', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 html.Li([
-                    dcc.Link('Effective Fuderal Funds Rates', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Another sample chart', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 html.Li([
-                    dcc.Link('Consumer Price Index for all Urban Consumers', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Sample BTC vs LTC Market Price', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 
@@ -75,19 +75,19 @@ tab_one_content = html.Div([
         html.Div([
             html.Ul([
                 html.Li([
-                    dcc.Link('10-Year Reasurey Constant Maturity Minus 2-Year Treaurey Constant Maturity', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Different Crypto Currency Market Price VS BTC Closing Price', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 html.Li([
-                    dcc.Link('10-Year Reasurey Constant Maturity Minus 3-Year Treaurey Constant Maturity', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Sample chart two', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 html.Li([
-                    dcc.Link('Effective Fuderal Funds Rates', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Another sample chart', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 html.Li([
-                    dcc.Link('Consumer Price Index for all Urban Consumers', href = '/graph',style={'text-decoration': 'none'}),
+                    dcc.Link('Sample BTC vs LTC Market Price', href = '/graph',style={'text-decoration': 'none'}),
                 ],style={'margin-top':'3%'}),
 
                 
@@ -120,9 +120,9 @@ def render_content(tab):
         ])
     elif tab == 'tab-3':
         return html.Div([
-            html.H3('Latest Releases')
+            html.H3('Popular Categories')
         ])
     elif tab == 'tab-4':
         return html.Div([
-            html.H3('Tools')
+            html.H3('Recent Series')
         ])

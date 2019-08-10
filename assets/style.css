@@ -1,8 +1,10 @@
-body {
-    /* background: #313135; */
-    /* color: white; */
+/* body {
+    background: #313135;
+    color: white !important;
+} */
+body{
+    margin:0;
 }
-
 a {
     color: rgb(50, 50, 50);;
     /* color: white; */
@@ -24,7 +26,64 @@ a {
     text-align: center;    
 }
 
-.detailed-graph {
-    /* background: #313135;
-    color: white; */
+.for-download {
+    display: flex;
+    align-items: center;
+}
+#download-button-container {
+    margin-left: 10px;
+}
+/*  Fix for DatePicker's dropdown calender - do not remove */
+td.CalendarDay {
+    padding: 0;
+}
+.date-and-export{
+    display: flex;
+    padding: 30px 15px;
+    background-color: #fff;
+}
+.m-l-auto{
+    margin-left: auto;
+}
+.main-title{
+    background: #313135;
+    padding: 30px 15px;
+}
+.main-title h2{
+    color: #cacaca;
+    font-size: 26px;
+    margin: 0;
+    letter-spacing: 1px;
+}
+.has-value.Select--single>.Select-control .Select-value .Select-value-label {
+    color: #979797;
+}
+.download-link a {
+    color: #707070;
+    text-decoration: none;
+    font-weight: 600;
+}
+.DateRangePickerInput input{
+    color: #979797;
+}
+.DateRangePickerInput__withBorder {
+    background: #f8f8f8;
+    border: none; 
+}
+.DateRangePickerInput_arrow_svg{
+    margin: 0 10px;
+}
+.plot-container .main-svg:first-child{
+    background: rgb(248, 248, 248) !important;
+}
+
+/* index page */
+.chart-list-item {
+    display: inline-flex;
+    height: 50px;
+    width: 600px
+}
+
+.item-thumbnail {
+    width: 50px;
 }

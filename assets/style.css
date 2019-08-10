@@ -76,14 +76,3 @@ td.CalendarDay {
 .plot-container .main-svg:first-child{
     background: rgb(248, 248, 248) !important;
 }
-
-/* index page */
-.chart-list-item {
-    display: inline-flex;
-    height: 50px;
-    width: 600px
-}
-
-.item-thumbnail {
-    width: 50px;
-}

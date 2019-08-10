@@ -219,10 +219,10 @@ def thumbnail_chart():
                             },
                     yaxis={'title': '','showticklabels':False},
                     showlegend=False,
-                    # height = 90,
-                    # width = 120,
+                    height = 90,
+                    width = 120,
                     plot_bgcolor='rgb(229, 236, 246)',
-                    margin=go.layout.Margin(l=0, r=0, t=0, b=0)
+                    margin=go.layout.Margin(l=0, r=50, t=10, b=40)
                 )
             }
         ) 

@@ -75,7 +75,7 @@ def process_and_get_crypto_data():
     # calulate Total Weighted Price of those 3
     for_wp = lambda df: df['Close**'] * df['Market Cap']
     for_btc_wp = for_wp(btc_df)
-    print("for_type:", for_btc_wp)
+
     for_ltc_wp = for_wp(ltc_df)
     for_btc_cash_wp = for_wp(btc_cash_df)
 

@@ -19,11 +19,13 @@ app.layout = html.Div([
 
 # Callback for routing
 @app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
+              [Input('url', component_property='pathname')])
 def display_page(pathname):
+    pathname = str(pathname)
     if pathname == '/':
         return cat_tabs
-    elif pathname == '/graph':
+    elif pathname.startswith('/graph'):
+        chart_to_load = pathname.split('/')[-1]
         return load_main_chart()
 
 

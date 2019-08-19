@@ -12,11 +12,6 @@ from app import app
 from graph import thumbnail_chart
 
 
-dashboard_title = html.Div([
-        html.H3(children='Crypto Dashboard', className='dashboard-title')
-    ]
-),
-
 cat_tabs = html.Div(id='categoryMenu',
     children=[
         html.Div(
@@ -32,88 +27,75 @@ cat_tabs = html.Div(id='categoryMenu',
         ),
         html.Div(id='tabs-content')
     ], 
-    className="category-tabs"
+    className='category-tabs'
 )
 
-
 # Dashboard Index Page
-tab_one_content = html.Div([
-    html.Div([
-        html.Div([
-            html.Ul([
-                html.Li([
-                    dcc.Link('Different Crypto Currency Market Price VS BTC Closing Price', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                html.Li([
-                    dcc.Link('Sample chart two', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                html.Li([
-                    dcc.Link('Another sample chart', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                html.Li([
-                    dcc.Link('Sample BTC vs LTC Market Price', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                
-            ],style={'text-decoration': 'none','font-size':'18px','list-style-type':'none','font-weight':'300'},className='ten columns'),
-            
-            html.Div([
+new_tab_content = html.Div(children=[
+    html.Div(children=[
+        html.Div(children=[
+            html.Div(children=[
+                dcc.Link('Different Crypto Currency Market Price VS BTC Closing Price',
+                    href='/graph/DCCMPvBCP',
+                    style={'text-decoration': 'none'}
+                )
+            ], className='item-title'),
+            html.Div(children=[
                 thumbnail_chart()
-                # html.H4('hello'),
-            ],style={'margin-top':'1%'},className='two columns'),
-            html.Div([
-                thumbnail_chart()
-            ],style={'margin-top':'1%'},className='two columns'),
-            html.Div([
-                thumbnail_chart()
-            ],style={'margin-top':'1%'},className='two columns'),
-        ],className='six columns'),
+            ], className='item-thumbnail')
+        ], className='item-wrapper')
+    ], className='chart-list-item'),
 
-        html.Div([
-            html.Ul([
-                html.Li([
-                    dcc.Link('Different Crypto Currency Market Price VS BTC Closing Price', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                html.Li([
-                    dcc.Link('Sample chart two', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                html.Li([
-                    dcc.Link('Another sample chart', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                html.Li([
-                    dcc.Link('Sample BTC vs LTC Market Price', href = '/graph',style={'text-decoration': 'none'}),
-                ],style={'margin-top':'3%'}),
-
-                
-            ],style={'text-decoration': 'none','font-size':'18px','list-style-type':'none','font-weight':'300'},className='ten columns'),
-            
-            html.Div([
+    html.Div(children=[
+        html.Div(children=[
+            html.Div(children=[
+                dcc.Link('Different Crypto Currency Market Price VS LTC Closing Price',
+                    href='/graph/DCCMPvLCP',
+                    style={'text-decoration': 'none'}
+                )
+            ], className='item-title'),
+            html.Div(children=[
                 thumbnail_chart()
-                # html.H4('hello'),
-            ],style={'margin-top':'1%'},className='two columns'),
-            html.Div([
+            ], className='item-thumbnail')
+        ], className='item-wrapper'),
+    ], className='chart-list-item'),
+
+    html.Div(children=[
+        html.Div(children=[
+            html.Div(children=[
+                dcc.Link('Different Crypto Currency Market Price VS BTC-Cash Closing Price',
+                    href='/graph/DCCMPvBCCP',
+                    style={'text-decoration': 'none'}
+                )
+            ], className='item-title'),
+            html.Div(children=[
                 thumbnail_chart()
-            ],style={'margin-top':'1%'},className='two columns'),
-            html.Div([
+            ], className='item-thumbnail')
+        ], className='item-wrapper'),
+    ], className='chart-list-item'),
+
+    html.Div(children=[
+        html.Div(children=[
+            html.Div(children=[
+                dcc.Link('Different Crypto Currency Market Price VS Gold Closing Price',
+                    href='/graph',
+                    style={'text-decoration': 'none'}
+                )
+            ], className='item-title'),
+            html.Div(children=[
                 thumbnail_chart()
-            ],style={'margin-top':'1%'},className='two columns'),
-        ],className='six columns'),
-        
-    ],className='row',style={'margin-left':'2%'}),
-])
+            ], className='item-thumbnail')
+        ], className='item-wrapper'),
+    ], className='chart-list-item')    
+
+], className='chart-list')
 
 
 @app.callback(Output('tabs-content', 'children'),
               [Input('tabs', 'value')])
 def render_content(tab):
     if tab == 'tab-1':
-        return tab_one_content
+        return new_tab_content
     elif tab == 'tab-2':
         return html.Div([
             html.H3('Popular Series')

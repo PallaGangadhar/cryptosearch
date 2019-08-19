@@ -1,14 +1,8 @@
-/* body {
-    background: #313135;
-    color: white !important;
-} */
-body{
+body {
+    background: #414045;
     margin:0;
 }
-a {
-    color: rgb(50, 50, 50);;
-    /* color: white; */
-}
+
 
 .tab-container {
     width: 60%;    
@@ -19,9 +13,8 @@ a {
 }
 
 .dashboard-title {
-    padding: 40px;
+    padding: 40px 30px 20px 30px;
     /* background: aliceblue; */
-    background: #313135;
     color: white;
     text-align: center;    
 }
@@ -32,6 +25,12 @@ a {
 }
 #download-button-container {
     margin-left: 10px;
+}
+.dashboard-title h2{
+    color: #3dd5b0;
+    background: #323037;
+    padding: 30px;
+    margin: 0;
 }
 /*  Fix for DatePicker's dropdown calender - do not remove */
 td.CalendarDay {
@@ -50,7 +49,8 @@ td.CalendarDay {
     padding: 30px 15px;
 }
 .main-title h2{
-    color: #cacaca;
+    /* color: #cacaca; */
+    color: #34e0af;
     font-size: 26px;
     margin: 0;
     letter-spacing: 1px;
@@ -73,6 +73,67 @@ td.CalendarDay {
 .DateRangePickerInput_arrow_svg{
     margin: 0 10px;
 }
-.plot-container .main-svg:first-child{
+/* .plot-container .main-svg:first-child{
     background: rgb(248, 248, 248) !important;
+} */
+
+
+/* Index page */
+
+.chart-list-item {
+    display: inline-block;
+    width: 50%;
+    background-color: #323036;
 }
+.chart-list{
+    margin: 25px;
+    background-color: #f8f8f8;
+}
+.item-wrapper{
+    display: flex;
+    padding: 20px;
+    border: 1px solid #3e3e3e;
+}
+.item-thumbnail {
+    margin-left: auto;
+}
+#page-content{
+    background: #414045;
+}
+/* .plot-container .main-svg:first-child {
+    background: #313035 !important;
+} */
+.item-title a{
+color: #34e0af;
+    font-size: 16px;
+    font-weight: 600;
+}
+#tabs-parent{
+    padding-top: 25px;
+    text-align: center;
+}
+#tabs span{
+    color: #34e0af;
+    font-size: 15px;
+    font-weight: 600;
+}
+#tabs{
+    display: flex;
+    width: auto;
+    margin: 0 25px;
+}
+.tab{
+    border:1px solid #5d5d5d !important;
+    background-color:#414045 !important;
+}
+.tab.tab--selected{
+    border-top: 1px solid #33e0a7 !important;
+    background-color:#323135 !important;
+}
+/* .tabs-content {
+    height: 500px;
+}
+
+.chart-list {
+    height: 400px;
+} */

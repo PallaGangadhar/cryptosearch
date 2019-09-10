@@ -22,7 +22,7 @@ data = process_and_get_crypto_data()
 ##########################################
 
 main_graph_layout = go.Layout(
-    title='Different Crypto Currency Market Price VS BTC Closing Price',
+    title='Incrementum Store of Value Crypto Index',
     xaxis={'title': 'Time Period',
            'type': 'date',
            'rangeslider': {'visible': True},
@@ -249,29 +249,3 @@ def update_download_data(value):
                 href=path_to_file, download=excel_filename)], className='download-link'),
     ]                
 
-
-
-# @app.callback(
-#     Output('download-button-container', 'children'),
-#     [Input('export-dropdown', 'value')])
-# def update_link(value):
-#     return '/dash/urlToDownload?value={}'.format(value)
-
-# @app.server.route('/dash/urlToDownload')
-# def download_excel():
-#     value = request.args.get('value')
-#     global data
-#     df1 = data
-#     buf = io.BytesIO()
-#     excel_writer = pd.ExcelWriter(buf, engine="xlsxwriter")
-#     df1.to_excel(excel_writer, sheet_name="sheet1", index=False)
-#     excel_writer.save()
-#     excel_data = buf.getvalue()
-#     buf.seek(0)
-#     return send_file(
-#         buf,
-#         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-#         attachment_filename="test11311.xlsx",
-#         as_attachment=True,
-#         cache_timeout=0
-#     )

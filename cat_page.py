@@ -36,7 +36,7 @@ new_tab_content = html.Div(children=[
         html.Div(children=[
             html.Div(children=[
                 dcc.Link('Different Crypto Currency Market Price VS BTC Closing Price',
-                    href='/graph/DCCMPvBCP',
+                    href='/graph/storeofvalueindex',
                     style={'text-decoration': 'none'}
                 )
             ], className='item-title'),
@@ -50,7 +50,7 @@ new_tab_content = html.Div(children=[
         html.Div(children=[
             html.Div(children=[
                 dcc.Link('Different Crypto Currency Market Price VS LTC Closing Price',
-                    href='/graph/DCCMPvLCP',
+                    href='/graph/storeofvalueindex',
                     style={'text-decoration': 'none'}
                 )
             ], className='item-title'),
@@ -64,7 +64,7 @@ new_tab_content = html.Div(children=[
         html.Div(children=[
             html.Div(children=[
                 dcc.Link('Different Crypto Currency Market Price VS BTC-Cash Closing Price',
-                    href='/graph/DCCMPvBCCP',
+                    href='/graph/storeofvalueindex',
                     style={'text-decoration': 'none'}
                 )
             ], className='item-title'),
@@ -78,7 +78,7 @@ new_tab_content = html.Div(children=[
         html.Div(children=[
             html.Div(children=[
                 dcc.Link('Different Crypto Currency Market Price VS Gold Closing Price',
-                    href='/graph',
+                    href='/graph/storeofvalueindex',
                     style={'text-decoration': 'none'}
                 )
             ], className='item-title'),

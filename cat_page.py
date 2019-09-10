@@ -19,10 +19,10 @@ cat_tabs = html.Div(id='categoryMenu',
             className='dashboard-title'
         ),        
         dcc.Tabs(id="tabs", value='tab-1', children=[
-                dcc.Tab(label='At a glance', value='tab-1'),
-                dcc.Tab(label='Popular Series', value='tab-2'),
-                dcc.Tab(label='Popular Categories', value='tab-3'),
-                dcc.Tab(label='Recent Series', value='tab-4'),
+                dcc.Tab(label='At A Glance', value='tab-1'),
+                dcc.Tab(label='Series', value='tab-2'),
+                dcc.Tab(label='Recent', value='tab-3'),
+                dcc.Tab(label='All', value='tab-4'),
             ]
         ),
         html.Div(id='tabs-content')
@@ -98,13 +98,13 @@ def render_content(tab):
         return new_tab_content
     elif tab == 'tab-2':
         return html.Div([
-            html.H3('Popular Series')
-        ])
+            html.H3('Coming Soon')
+        ], style={'text-align': 'center', 'color': '#34e0af'})
     elif tab == 'tab-3':
         return html.Div([
-            html.H3('Popular Categories')
-        ])
+            html.H3('Coming Soon')
+        ], style={'text-align': 'center', 'color': '#34e0af'})
     elif tab == 'tab-4':
         return html.Div([
-            html.H3('Recent Series')
-        ])
+            html.H3('Coming Soon')
+        ], style={'text-align': 'center', 'color': '#34e0af'})

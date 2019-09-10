@@ -1,4 +1,4 @@
-/env_crypto_dashboard
+/envs_crypto
 .vscode
 .ipynb_checkpoints
 *.pkl

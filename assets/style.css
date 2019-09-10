@@ -137,3 +137,96 @@ color: #34e0af;
 .chart-list {
     height: 400px;
 } */
+
+/* by dde */
+
+.social-links {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-right: 25px;
+    margin-right: 25px;
+    border-right: 1px solid #9b9b9b;
+}
+
+.social-links a {
+    display: inline-block;
+}
+
+.social-links a i {
+    padding: 5px 2px 2px 4px;
+    text-align: center;
+    padding-right: 5px;
+    font-size: 20px;
+    color: #fff;
+    border-radius: 20px;
+    width: 24px;
+    height: 24px;
+}
+
+.social-links #share-linkedin {
+    background: #0077b5;
+    border-color: #0077b5;
+}
+
+.social-links #share-twitter {
+    background: #55acee;
+    border-color: #55acee;
+}
+
+.social-links #share-reddit {
+    background: #ff5700;
+    border-color: #ff5700;
+}
+
+.social-links #share-facebook {
+    background: #3b5998;
+    border-color: #3b5998;
+}
+
+.social-links #share-email {
+    background: #d3423d;
+    border-color: #d3423d;
+}
+
+/* by dde @10th Sep */
+.export-data-opts summary {
+    background-color: #33e0a7;
+    color: #313135;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.export-data-opts ul {
+    list-style: none;
+    background-color: #dddddd;
+}
+
+.export-data-opts ul li a {
+    padding-left:10px;
+}
+
+.export-data-opts ul li {
+    padding-top:2px;
+    margin-bottom:2px;
+}
+
+.export-data-opts ul li:hover {
+    background-color: #b3b3b3;
+    cursor: pointer;
+}
+
+.graph-info {
+    background-color: #575758;
+    color: white;
+    padding: 2%;
+    font-size: 16px;
+}
+
+.source-description {
+    margin-bottom: 30px;
+}
+
+.graph-info .source-title, .citation-title{
+    font-weight: bold;
+    margin-right: 1%;
+}

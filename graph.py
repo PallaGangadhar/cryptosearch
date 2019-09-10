@@ -1,15 +1,25 @@
+import io
 import base64
 import pandas as pd
 import plotly.graph_objs as go
 import dash_core_components as dcc
 import dash_html_components as html
+from flask import request, send_file
 from dash.dependencies import Input, Output
 
 from data_store import process_and_get_crypto_data
 from app import app
 
 
+##########################################
+########    Data Initialization    #######
+##########################################
 data = process_and_get_crypto_data()
+
+
+##########################################
+####  Define all layouts from below  #####
+##########################################
 
 main_graph_layout = go.Layout(
     title='Different Crypto Currency Market Price VS BTC Closing Price',
@@ -48,24 +58,53 @@ main_graph_layout = go.Layout(
     margin=go.layout.Margin(l=40, r=0, t=100, b=40)
 )
 
+social_share_links = [
+    html.A(title="",
+    children=[html.I(id='share-twitter', n_clicks=0, className='fa fa-twitter fa-2x')],
+    href='https://twitter.com/intent/tweet?url=http://data.cryptoresearch.report/graph/DCCMPvBCP',
+    target="_blank",
+    style={'text-decoration': 'none', 'padding-left':'10px'}),
+
+    html.A(title="",
+    children=[html.I(id='share-facebook', n_clicks=0, className='fa fa-facebook fa-2x')],
+    href='http://www.facebook.com/sharer.php?u=http://data.cryptoresearch.report/graph/DCCMPvBCP',
+    target="_blank",
+    style={'text-decoration': 'none', 'padding-left':'10px'}),
+
+    html.A(title="",
+    children=[html.I(id='share-reddit', n_clicks=0, className='fa fa-reddit fa-2x')],
+    href='https://reddit.com/submit?url=http://data.cryptoresearch.report/graph/DCCMPvBCP',
+    target="_blank",
+    style={'text-decoration': 'none', 'padding-left':'10px'}),
+
+    html.A(title="",
+    children=[html.I(id='share-linkedin', n_clicks=0, className='fa fa-linkedin fa-2x fg-share-gtm')],
+    href='https://www.linkedin.com/shareArticle?mini=true&url=http://data.cryptoresearch.report/graph/DCCMPvBCP',
+    target="_blank",
+    style={'text-decoration': 'none', 'padding-left':'10px'}),
+
+    html.A(title="",
+    children=[html.I(id='share-email', n_clicks=0, className='fa fa-envelope fa-2x')],
+    href='mailto:?Subject=Checkout%20this%20Awesome%20visualization%20from%20CryptoResearch&body=http://data.cryptoresearch.report/graph/DCCMPvBCP',
+    target="_top",
+    style={'text-decoration': 'none', 'padding-left':'10px'}),
+]
+
 def load_main_chart():
     return html.Div(children=[
         html.Div(children=[
             html.H2('Different Crypto Currency Market Price VS BTC Closing Price')
         ], className='main-title'),
         html.Div(children=[
-            html.Div([
-                dcc.Dropdown(
-                    id='export-dropdown',
-                    options=[
-                        {'label': 'Export as CSV', 'value': 'csv'},
-                    ],
-                    value='',
-                    style={'width': 200}
-                ),
-                html.Div(id='download-button-container'),
-            ], className='for-download',),
-            
+            html.Div(children=social_share_links, className='social-links'),
+
+            html.Details(id='export-data',
+                children=[
+                    html.Summary('Export Data'),
+                    html.Ul(id='export-list', children=[])
+                ], className='export-data-opts'
+            ),
+
             html.Div([
                 dcc.DatePickerRange(
                     id='my-date-picker-range',
@@ -102,51 +141,26 @@ def load_main_chart():
                     ],
                     'layout': main_graph_layout
                 },
-            )
-        ], style={'margin': 0})
+            )], 
+            style={'margin': 0}
+        ),
+
+        html.Div(id='graph-info', children=[
+            html.Span('Source:', className='source-title'),
+            html.Span('Coinmarketcap.com, Incrementum AG', className='sources'),
+            html.P('The Incrementum Store of Value Index is a market capitalization \
+                weighted index comprising of all non-Turing complete cryptocurrencies \
+                with at least two out of three criteria met including market capitalization \
+                of $500,000 or higher, market trading for 365 days or greater, and market \
+                trading on two exchanges or more. Privacy coins are excluded. \
+                The three coins in the index are Bitcoin, Bitcoin Cash, and Litecoin.',
+                className='source-description'),
+            html.Span('Suggested Citation:', className='citation-title'),
+            html.P('Incrementum AG, Incrementum Store of Value Crypto Index, retrieved \
+                from Crypto Research Report; http://data.cryptoresearch.report/graph/DCCMPvBCP, \
+                September, 2019.', className='citation-info')
+        ], className='graph-info')
     ], className='detailed-graph')
-
-
-# Callback for main Graph
-@app.callback(
-    Output('example-graph', 'figure'),
-    [Input('my-date-picker-range', 'start_date'),
-     Input('my-date-picker-range', 'end_date')])
-def update_output(start_date, end_date):
-    global data
-    data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
-    return {
-        'data': [
-            go.Scatter(
-                x=data['Date'],
-                y=data['Weighted_Price'],
-                mode='lines',
-                name='Weighted Price of all Crypto Currency',
-            ),
-            go.Scatter(
-                x=data['Date'],
-                y=data['Btc_Close_Price'],
-                mode='lines',
-                name='Closing Price of Bitcoin'
-            ),
-        ], 'layout': main_graph_layout}
-
-
-@app.callback(
-    Output('download-button-container', 'children'),
-    [Input('export-dropdown', 'value')])
-def update_download_data(value):
-    global data
-    csv = data.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode())
-    payload = b64.decode()
-    filename = 'data.' + value
-    path_to_file = 'data:text/csv;base64,' + payload
-    return html.Div([
-        html.A('Click here to download CSV',
-               href=path_to_file, download=filename)
-    ], className='download-link')
-
 
 def thumbnail_chart():
     g = html.Div(
@@ -166,7 +180,7 @@ def thumbnail_chart():
                         x=data['Date'],
                         y=data['Btc_Close_Price'],
                         mode='lines',
-                        name='Closing Price of Bitcoin'
+                        name='Bitcoin Price'
                     ),
                 ],
                 'layout': go.Layout(
@@ -183,3 +197,81 @@ def thumbnail_chart():
         )
         ], className='charts-thumbnail')
     return g
+
+
+##########################################
+#####  Define all callbacks below   ######
+##########################################
+
+# Callback for main Graph
+@app.callback(
+    Output('example-graph', 'figure'),
+    [Input('my-date-picker-range', 'start_date'),
+     Input('my-date-picker-range', 'end_date')])
+def update_output(start_date, end_date):
+    global data
+    data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
+    return {
+        'data': [
+            go.Scatter(
+                x=data['Date'],
+                y=data['Weighted_Price'],
+                mode='lines', 
+                name='Incrementum Store of Value Crypto Index',
+            ),
+            go.Scatter(
+                x=data['Date'],
+                y=data['Btc_Close_Price'],
+                mode='lines',
+                name='Closing Price of Bitcoin'
+            ),
+        ], 'layout': main_graph_layout}
+
+
+@app.callback(
+    Output('export-list', 'children'),
+    [Input('export-data', 'n_clicks')])
+def update_download_data(value):
+    global data
+    csv = data.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode())
+    payload = b64.decode()
+    csv_filename = 'data.csv'
+    excel_filename = 'data.xls'
+    path_to_file = 'data:text/csv;base64,' + payload
+
+    return [
+        html.Li([
+            html.A('CSV',
+                href=path_to_file, download=csv_filename)], className='download-link'),
+        html.Li([
+            html.A('Excel',
+                href=path_to_file, download=excel_filename)], className='download-link'),
+    ]                
+
+
+
+# @app.callback(
+#     Output('download-button-container', 'children'),
+#     [Input('export-dropdown', 'value')])
+# def update_link(value):
+#     return '/dash/urlToDownload?value={}'.format(value)
+
+# @app.server.route('/dash/urlToDownload')
+# def download_excel():
+#     value = request.args.get('value')
+#     global data
+#     df1 = data
+#     buf = io.BytesIO()
+#     excel_writer = pd.ExcelWriter(buf, engine="xlsxwriter")
+#     df1.to_excel(excel_writer, sheet_name="sheet1", index=False)
+#     excel_writer.save()
+#     excel_data = buf.getvalue()
+#     buf.seek(0)
+#     return send_file(
+#         buf,
+#         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+#         attachment_filename="test11311.xlsx",
+#         as_attachment=True,
+#         cache_timeout=0
+#     )

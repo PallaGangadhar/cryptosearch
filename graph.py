@@ -93,7 +93,7 @@ social_share_links = [
 def load_main_chart():
     return html.Div(children=[
         html.Div(children=[
-            html.H2('Different Crypto Currency Market Price VS BTC Closing Price')
+            html.H2('Incrementum Store of Value Crypto Index')
         ], className='main-title'),
         html.Div(children=[
             html.Div(children=social_share_links, className='social-links'),

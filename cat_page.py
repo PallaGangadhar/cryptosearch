@@ -9,7 +9,8 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from graph import thumbnail_chart
+import graph
+import graph_two
 
 
 cat_tabs = html.Div(id='categoryMenu',
@@ -41,7 +42,7 @@ new_tab_content = html.Div(children=[
                 )
             ], className='item-title'),
             html.Div(children=[
-                thumbnail_chart()
+                graph.thumbnail_chart()
             ], className='item-thumbnail')
         ], className='item-wrapper')
     ], className='chart-list-item'),
@@ -49,13 +50,13 @@ new_tab_content = html.Div(children=[
     html.Div(children=[
         html.Div(children=[
             html.Div(children=[
-                dcc.Link('Different Crypto Currency Market Price VS LTC Closing Price',
-                    href='/graph/storeofvalueindex',
+                dcc.Link('90-Day Rolling Correlation Gold vs Incrementum Store of Value Index',
+                    href='/graph/gold_vs_sov',
                     style={'text-decoration': 'none'}
                 )
             ], className='item-title'),
             html.Div(children=[
-                thumbnail_chart()
+                graph_two.thumbnail_chart()
             ], className='item-thumbnail')
         ], className='item-wrapper'),
     ], className='chart-list-item'),
@@ -69,7 +70,7 @@ new_tab_content = html.Div(children=[
                 )
             ], className='item-title'),
             html.Div(children=[
-                thumbnail_chart()
+                graph.thumbnail_chart()
             ], className='item-thumbnail')
         ], className='item-wrapper'),
     ], className='chart-list-item'),
@@ -83,7 +84,7 @@ new_tab_content = html.Div(children=[
                 )
             ], className='item-title'),
             html.Div(children=[
-                thumbnail_chart()
+                graph.thumbnail_chart()
             ], className='item-thumbnail')
         ], className='item-wrapper'),
     ], className='chart-list-item')    

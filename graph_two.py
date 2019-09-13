@@ -7,14 +7,14 @@ import dash_html_components as html
 from flask import request, send_file
 from dash.dependencies import Input, Output
 
-from data_store import process_and_get_crypto_data
+from data_store import get_graph_two_data
 from app import app
 
 
 ##########################################
 ########    Data Initialization    #######
 ##########################################
-data = process_and_get_crypto_data()
+data = get_graph_two_data()
 
 
 ##########################################
@@ -22,7 +22,7 @@ data = process_and_get_crypto_data()
 ##########################################
 
 main_graph_layout = go.Layout(
-    title='Incrementum Store of Value Crypto Index vs Bitcoin',
+    title='90-Day Rolling Correlation Gold vs Incrementum Store of Value Index',
     xaxis={'title': 'Time Period',
            'type': 'date',
            'rangeslider': {'visible': True},
@@ -39,7 +39,13 @@ main_graph_layout = go.Layout(
                              },
            'gridcolor': 'rgb(98, 98, 98)'
            },
-    yaxis={'title': 'Weighted Price in USD', 'gridcolor': 'rgb(98, 98, 98)'},
+    yaxis={
+        'title': '30-Month Rolling Correlation of Gold vs. Incrementum Store of Value Crypto Index',
+        'gridcolor': 'rgb(98, 98, 98)',
+        'range': [-1.000000, 1.000000],
+        'dtick': 0.2,
+        'automargin': True,
+    },
     showlegend=True,
     legend=go.layout.Legend(
         xanchor="auto",
@@ -52,37 +58,38 @@ main_graph_layout = go.Layout(
         'color': 'rgb(52,224,175)',
         'size': 12
     },
+    height=700,
     margin=go.layout.Margin(l=40, r=0, t=100, b=40)
 )
 
 social_share_links = [
     html.A(title="",
     children=[html.I(id='share-twitter', n_clicks=0, className='fa fa-twitter fa-2x')],
-    href='https://twitter.com/intent/tweet?url=http://data.cryptoresearch.report/graph/storeofvalueindex',
+    href='https://twitter.com/intent/tweet?url=http://data.cryptoresearch.report/graph/gold_vs_sov',
     target="_blank",
     style={'text-decoration': 'none', 'padding-left':'10px'}),
 
     html.A(title="",
     children=[html.I(id='share-facebook', n_clicks=0, className='fa fa-facebook fa-2x')],
-    href='http://www.facebook.com/sharer.php?u=http://data.cryptoresearch.report/graph/storeofvalueindex',
+    href='http://www.facebook.com/sharer.php?u=http://data.cryptoresearch.report/graph/gold_vs_sov',
     target="_blank",
     style={'text-decoration': 'none', 'padding-left':'10px'}),
 
     html.A(title="",
     children=[html.I(id='share-reddit', n_clicks=0, className='fa fa-reddit fa-2x')],
-    href='https://reddit.com/submit?url=http://data.cryptoresearch.report/graph/storeofvalueindex',
+    href='https://reddit.com/submit?url=http://data.cryptoresearch.report/graph/gold_vs_sov',
     target="_blank",
     style={'text-decoration': 'none', 'padding-left':'10px'}),
 
     html.A(title="",
     children=[html.I(id='share-linkedin', n_clicks=0, className='fa fa-linkedin fa-2x fg-share-gtm')],
-    href='https://www.linkedin.com/shareArticle?mini=true&url=http://data.cryptoresearch.report/graph/storeofvalueindex',
+    href='https://www.linkedin.com/shareArticle?mini=true&url=http://data.cryptoresearch.report/graph/gold_vs_sov',
     target="_blank",
     style={'text-decoration': 'none', 'padding-left':'10px'}),
 
     html.A(title="",
     children=[html.I(id='share-email', n_clicks=0, className='fa fa-envelope fa-2x')],
-    href='mailto:?Subject=Checkout%20this%20Awesome%20visualization%20from%20CryptoResearch&body=http://data.cryptoresearch.report/graph/storeofvalueindex',
+    href='mailto:?Subject=Checkout%20this%20Awesome%20visualization%20from%20CryptoResearch&body=http://data.cryptoresearch.report/graph/gold_vs_sov',
     target="_top",
     style={'text-decoration': 'none', 'padding-left':'10px'}),
 ]
@@ -90,21 +97,20 @@ social_share_links = [
 def load_main_chart():
     return html.Div(children=[
         html.Div(children=[
-            html.H2('Incrementum Store of Value Crypto Index vs Bitcoin')
+            html.H2('90-Day Rolling Correlation Gold vs Incrementum Store of Value Index')
         ], className='main-title'),
         html.Div(children=[
             html.Div(children=social_share_links, className='social-links'),
-
-            html.Details(id='export-data',
+            html.Details(id='export-data-two',
                 children=[
                     html.Summary('Export Data'),
-                    html.Ul(id='export-list', children=[])
+                    html.Ul(id='export-list-two', children=[])
                 ], className='export-data-opts'
             ),
 
             html.Div([
                 dcc.DatePickerRange(
-                    id='my-date-picker-range',
+                    id='date-picker-range-two',
                     start_date=data['Date'].min(),
                     end_date=data['Date'].max(),
                     max_date_allowed=data['Date'].max(),
@@ -116,7 +122,7 @@ def load_main_chart():
 
         html.Div([
             dcc.Graph(
-                id='store-of-val-index',
+                id='gold-vs-btc-roll-cor',
                 config={
                     'displaylogo': False,
                     'displayModeBar': True,
@@ -126,14 +132,8 @@ def load_main_chart():
                     'data': [
                         go.Scatter(
                             x=data['Date'],
-                            y=data['SOV_index'],
+                            y=data['Rolling_corr'],
                             mode='lines'
-                        ),
-                        go.Scatter(
-                            x=data['Date'],
-                            y=data['Btc_Close_Price'],
-                            mode='lines',
-                            fillcolor='rgb(24, 128, 56)'
                         ),
                     ],
                     'layout': main_graph_layout
@@ -145,17 +145,18 @@ def load_main_chart():
         html.Div(id='graph-info', children=[
             html.Span('Source:', className='source-title'),
             html.Span('Coinmarketcap.com, Incrementum AG', className='sources'),
-            html.P('The Incrementum Store of Value Index is a market capitalization \
-                weighted index comprising of all non-Turing complete cryptocurrencies \
-                with at least two out of three criteria met including market capitalization \
-                of $500,000 or higher, market trading for 365 days or greater, and market \
-                trading on two exchanges or more. Privacy coins are excluded. \
-                The three coins in the index are Bitcoin, Bitcoin Cash, and Litecoin.',
+            html.P('The volatility in the returns of a crypto strategy will change \
+                significantly if gold is added to the investment strategy. Since gold \
+                is subject to significantly lower price fluctuations, the overall \
+                volatility decreases as the share of gold increases. In addition, \
+                the low correlation due to the well-known diversification effect reduces \
+                fluctuations in portfolio return disproportionately.',
                 className='source-description'),
             html.Span('Suggested Citation:', className='citation-title'),
-            html.P('Incrementum AG, Incrementum Store of Value Crypto Index, retrieved \
-                from Crypto Research Report; http://data.cryptoresearch.report/graph/storeofvalueindex, \
-                September, 2019.', className='citation-info')
+            html.P('Incrementum AG, 30-Month Rolling Correlation Gold vs. Incrementum Store \
+                of Value Crypto Index, retrieved from Crypto Research Report; \
+                http://data.cryptoresearch.report/graph/gold_vs_sov, September, 2019.',
+                className='citation-info')
         ], className='graph-info')
     ], className='detailed-graph')
 
@@ -169,15 +170,9 @@ def thumbnail_chart():
                 'data': [
                     go.Scatter(
                         x=data['Date'],
-                        y=data['SOV_index'],
+                        y=data['Rolling_corr'],
                         mode='lines',
-                        name='Weighted Price of all Crypto Currency',
-                    ),
-                    go.Scatter(
-                        x=data['Date'],
-                        y=data['Btc_Close_Price'],
-                        mode='lines',
-                        name='Bitcoin Price'
+                        name='Rolling Correlation AU vs BTC',
                     ),
                 ],
                 'layout': go.Layout(
@@ -202,9 +197,9 @@ def thumbnail_chart():
 
 # Callback for main Graph
 @app.callback(
-    Output('store-of-val-index', 'figure'),
-    [Input('my-date-picker-range', 'start_date'),
-     Input('my-date-picker-range', 'end_date')])
+    Output('gold-vs-btc-roll-cor', 'figure'),
+    [Input('date-picker-range-two', 'start_date'),
+     Input('date-picker-range-two', 'end_date')])
 def update_output(start_date, end_date):
     global data
     data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
@@ -212,22 +207,16 @@ def update_output(start_date, end_date):
         'data': [
             go.Scatter(
                 x=data['Date'],
-                y=data['SOV_index'],
+                y=data['Rolling_corr'],
                 mode='lines', 
-                name='Incrementum Store of Value Crypto Index',
-            ),
-            go.Scatter(
-                x=data['Date'],
-                y=data['Btc_Close_Price'],
-                mode='lines',
-                name='Bitcoin Price'
+                name='Rolling Correlation AU vs BTC',
             ),
         ], 'layout': main_graph_layout}
 
 
 @app.callback(
-    Output('export-list', 'children'),
-    [Input('export-data', 'n_clicks')])
+    Output('export-list-two', 'children'),
+    [Input('export-data-two', 'n_clicks')])
 def update_download_data(value):
     global data
     csv = data.to_csv(index=False)
@@ -245,4 +234,3 @@ def update_download_data(value):
             html.A('Excel',
                 href=path_to_file, download=excel_filename)], className='download-link'),
     ]                
-

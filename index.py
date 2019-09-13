@@ -7,7 +7,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
-from graph import load_main_chart
+import graph
+import graph_two
 from cat_page import cat_tabs
 from app import app
 
@@ -24,9 +25,12 @@ def display_page(pathname):
     pathname = str(pathname)
     if pathname == '/':
         return cat_tabs
-    elif pathname.startswith('/graph'):
+    elif pathname.startswith('/graph/storeofvalueindex'):
         chart_to_load = pathname.split('/')[-1]
-        return load_main_chart()
+        return graph.load_main_chart()
+    elif pathname.startswith('/graph/gold_vs_sov'):
+        chart_to_load = pathname.split('/')[-1]
+        return graph_two.load_main_chart()
 
 
 if __name__ == '__main__':

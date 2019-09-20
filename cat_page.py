@@ -11,7 +11,7 @@ from dash.dependencies import Input, Output
 from app import app
 import graph
 import graph_two
-
+import graph_three
 
 cat_tabs = html.Div(id='categoryMenu',
     children=[
@@ -64,30 +64,16 @@ new_tab_content = html.Div(children=[
     html.Div(children=[
         html.Div(children=[
             html.Div(children=[
-                dcc.Link('Different Crypto Currency Market Price VS BTC-Cash Closing Price',
-                    href='/graph/storeofvalueindex',
+                dcc.Link('Asset Allocation of Gold and Incrementum Store of Value Cryptocurrencies Portfolio',
+                    href='/graph/asset_alloc_gold_vs_sov',
                     style={'text-decoration': 'none'}
                 )
             ], className='item-title'),
             html.Div(children=[
-                graph.thumbnail_chart()
+                graph_three.thumbnail_chart()
             ], className='item-thumbnail')
         ], className='item-wrapper'),
     ], className='chart-list-item'),
-
-    html.Div(children=[
-        html.Div(children=[
-            html.Div(children=[
-                dcc.Link('Different Crypto Currency Market Price VS Gold Closing Price',
-                    href='/graph/storeofvalueindex',
-                    style={'text-decoration': 'none'}
-                )
-            ], className='item-title'),
-            html.Div(children=[
-                graph.thumbnail_chart()
-            ], className='item-thumbnail')
-        ], className='item-wrapper'),
-    ], className='chart-list-item')    
 
 ], className='chart-list')
 

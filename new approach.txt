@@ -1,0 +1,5 @@
+TODO: Make charts rendering dynamic as there will be multiple charts.
+
+TODO: Database implementation and design
+
+TODO: Handle Charts routing

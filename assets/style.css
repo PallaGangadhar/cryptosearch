@@ -87,7 +87,7 @@ td.CalendarDay {
 }
 .chart-list{
     margin: 25px;
-    background-color: #f8f8f8;
+    /* background-color: #f8f8f8; */
 }
 .item-wrapper{
     display: flex;
@@ -141,11 +141,8 @@ color: #34e0af;
 /* by dde */
 
 .social-links {
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    padding-right: 25px;
-    margin-right: 25px;
-    border-right: 1px solid #9b9b9b;
+    text-align: center;
+    padding: 10px;
 }
 
 .social-links a {
@@ -229,4 +226,37 @@ color: #34e0af;
 .graph-info .source-title, .citation-title{
     font-weight: bold;
     margin-right: 1%;
+}
+
+/* by dde - 16th Sep,19 */
+
+.frequency-selector {
+    display: flex;
+    width: 13%;
+    align-items: center;
+}
+
+.frequency-selector #freq-dropdown-one {
+    width: 110px;
+}
+.frequency-selector #freq-dropdown-two {
+    width: 110px;
+}
+
+.frequency-selector label {
+    margin-right: 5px;
+}
+
+.filedownload {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 105px;
+    z-index: 1;
+}
+
+.filedownload li a {
+    color: #707070;
+    text-decoration: none;
+    display: block;
 }

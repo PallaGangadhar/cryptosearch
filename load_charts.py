@@ -1,24 +1,24 @@
-from data_store import process_and_get_crypto_data
-from graph import load_main_chart
+# from data_store import process_and_get_crypto_data
+# from graph import load_main_chart
 
 
 ALL_CHART_LIST = {
-    'DCCMPvBCP': {
-        'title': 'Different Crypto Currency Market Price VS BTC Closing Price',
-        'x_label': '',
-        'y_label': '',
+    'storeofvalueindex': {
+        'title': 'Incrementum Store of Value Crypto Index vs Bitcoin',
+        'x_label': 'Time Period',
+        'y_label': 'Price in USD',
         'data': {},
         'layout_opts': {}
     },
-    'DCCMPvLCP': {
-        'title': 'Different Crypto Currency Market Price VS LTC Closing Price',
-        'x_label': '',
-        'y_label': '',
+    'gold_vs_sov': {
+        'title': '90-Day Rolling Correlation Gold vs Incrementum Store of Value Index',
+        'x_label': 'Time Period',
+        'y_label': '30-Month Rolling Correlation of Gold vs. Incrementum Store of Value Crypto Index',
         'data': {},
         'layout_opts': {}
     },
-    'DCCMPvBCCP': {
-        'title': 'Different Crypto Currency Market Price VS BTC-Cash Closing Price',
+    'asset_alloc_gold_vs_sov': {
+        'title': 'Asset Allocation of Gold and Incrementum Store of Value Cryptocurrencies Portfolio',
         'x_label': '',
         'y_label': '',
         'data': {},

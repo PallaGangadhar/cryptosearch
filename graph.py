@@ -6,6 +6,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from flask import request, send_file
 from dash.dependencies import Input, Output
+from datetime import date, timedelta, datetime
 
 from data_store import process_and_get_crypto_data
 from app import app
@@ -26,17 +27,6 @@ main_graph_layout = go.Layout(
     xaxis={'title': 'Time Period',
            'type': 'date',
            'rangeslider': {'visible': True},
-           'rangeselector': {'visible': True,
-                             'bgcolor': 'rgb(49, 48, 53)',
-                             'bordercolor': 'rgb(51, 224, 167)',
-                             'buttons':
-                             [
-                                 {'count': 1, 'step': 'year', 'label': '1Y'},
-                                 {'count': 5, 'step': 'year', 'label': '5Y'},
-                                 {'count': 10, 'step': 'year', 'label': '10Y'},
-                                 {'step': 'all', 'label': 'Max'}
-                             ]
-                             },
            'gridcolor': 'rgb(98, 98, 98)'
            },
     yaxis={'title': 'Weighted Price in USD', 'gridcolor': 'rgb(98, 98, 98)'},
@@ -93,22 +83,44 @@ def load_main_chart():
             html.H2('Incrementum Store of Value Crypto Index vs Bitcoin')
         ], className='main-title'),
         html.Div(children=[
-            html.Div(children=social_share_links, className='social-links'),
-
             html.Details(id='export-data',
                 children=[
                     html.Summary('Export Data'),
-                    html.Ul(id='export-list', children=[])
+                    html.Ul(id='export-list',  className='filedownload', children=[], style={'position':'absolute','display':'block','z-index':1})
                 ], className='export-data-opts'
             ),
 
+            html.Div(className='frequency-selector m-l-auto', children=[
+                html.Label('Frequency:'),
+                dcc.Dropdown(
+                    id='freq-dropdown-one',
+                    options=[
+                        {'label': 'Daily', 'value': 'Daily'},
+                        {'label': 'Weekly', 'value': 'Weekly'},
+                        {'label': 'Monthly', 'value': 'Monthly'},
+                        {'label': 'Quaterly', 'value': 'Quaterly'},
+                    ],
+                    value='Daily'
+                ),
+            ]),
+            html.Div(className='quick-filters m-l-auto', children=[
+                html.Button('YTD', id='button5',n_clicks_timestamp=0,style={'border':'none'}),
+                html.Span('|'),
+                html.Button('1Y', id='button3',n_clicks_timestamp=0,style={'border':'none'}),
+                html.Span('|'),
+                html.Button('5Y', id='button2',n_clicks_timestamp=0,style={'border':'none'}),
+                html.Span('|'),
+                html.Button('10Y', id='button4',n_clicks_timestamp=0,style={'border':'none'}),
+                html.Span('|'),
+                html.Button('MAX', id='button1',n_clicks_timestamp=0,style={'border':'none'}),
+            ]),
             html.Div([
                 dcc.DatePickerRange(
-                    id='my-date-picker-range',
-                    start_date=data['Date'].min(),
-                    end_date=data['Date'].max(),
-                    max_date_allowed=data['Date'].max(),
-                    min_date_allowed=data['Date'].min(),
+                    id='date-picker-range-one',
+                    start_date=data.index.min(),
+                    end_date=data.index.max(),
+                    max_date_allowed=data.index.max(),
+                    min_date_allowed=data.index.min(),
                     display_format='DD/MM/YYYY',
                 ),
             ], className='m-l-auto'),
@@ -125,12 +137,12 @@ def load_main_chart():
                 figure={
                     'data': [
                         go.Scatter(
-                            x=data['Date'],
+                            x=data.index,
                             y=data['SOV_index'],
                             mode='lines'
                         ),
                         go.Scatter(
-                            x=data['Date'],
+                            x=data.index,
                             y=data['Btc_Close_Price'],
                             mode='lines',
                             fillcolor='rgb(24, 128, 56)'
@@ -156,7 +168,10 @@ def load_main_chart():
             html.P('Incrementum AG, Incrementum Store of Value Crypto Index, retrieved \
                 from Crypto Research Report; http://data.cryptoresearch.report/graph/storeofvalueindex, \
                 September, 2019.', className='citation-info')
-        ], className='graph-info')
+        ], className='graph-info'),
+
+        html.Div(children=social_share_links, className='social-links'),
+        
     ], className='detailed-graph')
 
 def thumbnail_chart():
@@ -168,13 +183,13 @@ def thumbnail_chart():
             figure={
                 'data': [
                     go.Scatter(
-                        x=data['Date'],
+                        x=data.index,
                         y=data['SOV_index'],
                         mode='lines',
                         name='Weighted Price of all Crypto Currency',
                     ),
                     go.Scatter(
-                        x=data['Date'],
+                        x=data.index,
                         y=data['Btc_Close_Price'],
                         mode='lines',
                         name='Bitcoin Price'
@@ -203,26 +218,96 @@ def thumbnail_chart():
 # Callback for main Graph
 @app.callback(
     Output('store-of-val-index', 'figure'),
-    [Input('my-date-picker-range', 'start_date'),
-     Input('my-date-picker-range', 'end_date')])
-def update_output(start_date, end_date):
+    [
+        Input('date-picker-range-one', 'start_date'),
+        Input('date-picker-range-one', 'end_date'),
+        Input('freq-dropdown-one', 'value')
+    ])
+def update_main_graph(start_date, end_date, data_freq):
     global data
-    data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
+    if data_freq == 'Monthly':
+        temp_data = data.resample('M').mean()
+        new_data = temp_data[(temp_data.index >= start_date) & (temp_data.index <= end_date)]
+    elif data_freq == 'Quaterly':
+        temp_data = data.resample('Q').mean()
+        new_data = temp_data[(temp_data.index >= start_date) & (temp_data.index <= end_date)]
+    elif data_freq == 'Weekly':
+        temp_data = data.resample('W').mean()
+        new_data = temp_data[(temp_data.index >= start_date) & (temp_data.index <= end_date)]
+    else:
+        new_data = data[(data.index >= start_date) & (data.index <= end_date)]
+
     return {
         'data': [
             go.Scatter(
-                x=data['Date'],
-                y=data['SOV_index'],
+                x=new_data.index,
+                y=new_data['SOV_index'],
                 mode='lines', 
                 name='Incrementum Store of Value Crypto Index',
             ),
             go.Scatter(
-                x=data['Date'],
-                y=data['Btc_Close_Price'],
+                x=new_data.index,
+                y=new_data['Btc_Close_Price'],
                 mode='lines',
                 name='Bitcoin Price'
             ),
         ], 'layout': main_graph_layout}
+
+
+@app.callback(
+    [
+        Output('date-picker-range-one', 'start_date'), 
+        Output('date-picker-range-one', 'end_date')
+    ],
+    [
+        Input('button1', 'n_clicks_timestamp'),
+        Input('button2', 'n_clicks_timestamp'),
+        Input('button3', 'n_clicks_timestamp'),
+        Input('button4', 'n_clicks_timestamp'),
+        Input('button5', 'n_clicks_timestamp'),
+        Input('freq-dropdown-one', 'value'),
+    ])
+def updatedate(btn1, btn2, btn3, btn4, btn5, data_freq):
+    global data
+
+    if data_freq == 'Monthly':
+        new_data = data.resample('M').mean()
+        max_date = new_data.index.max()
+        min_date = new_data.index.min()
+
+    if data_freq == 'Quaterly':
+        new_data = data.resample('Q').mean()
+        max_date = new_data.index.max()
+        min_date = new_data.index.min()
+
+    if data_freq == 'Weekly':
+        new_data = data.resample('W').mean()
+        max_date = new_data.index.max()
+        min_date = new_data.index.min()
+
+    else:
+        max_date = data.index.max()
+        min_date = data.index.min()
+
+
+    if int(btn1) > int(btn2) and int(btn1) > int(btn3) and int(btn1) > int(btn4) and int(btn1) > int(btn5):
+        # for max data
+        return min_date,max_date
+    elif int(btn2) > int(btn1) and int(btn2) > int(btn3) and int(btn2) > int(btn4) and int(btn2) > int(btn5):
+        # for 5 year data
+        return max_date-timedelta(days=5*365),max_date
+    elif int(btn3) > int(btn1) and int(btn3) > int(btn2) and int(btn3) > int(btn4) and int(btn3) > int(btn5):
+        # for 1 year data
+        return max_date-timedelta(days=1*365),max_date
+    elif int(btn4) > int(btn1) and int(btn4) > int(btn2) and int(btn4) > int(btn3) and int(btn4) > int(btn5):
+        # for 10 year data
+        return max_date-timedelta(days=10*365),max_date
+    elif int(btn5) > int(btn1) and int(btn5) > int(btn2) and int(btn5) > int(btn3) and int(btn5) > int(btn4):
+        # for YTD data
+        return date(date.today().year, 1, 1),date.today()
+
+    return data.index.min(),data.index.max()
+
 
 
 @app.callback(
@@ -236,6 +321,7 @@ def update_download_data(value):
     csv_filename = 'data.csv'
     excel_filename = 'data.xls'
     path_to_file = 'data:text/csv;base64,' + payload
+    path_to_excel = 'data:application/vnd.ms-excel;base64,' + payload
 
     return [
         html.Li([
@@ -243,6 +329,7 @@ def update_download_data(value):
                 href=path_to_file, download=csv_filename)], className='download-link'),
         html.Li([
             html.A('Excel',
-                href=path_to_file, download=excel_filename)], className='download-link'),
+                href=path_to_excel, download=excel_filename)], className='download-link'),
     ]                
+
 

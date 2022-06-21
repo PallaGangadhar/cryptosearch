@@ -23,7 +23,7 @@ lxml==4.4.0
 MarkupSafe==1.1.1
 more-itertools==5.0.0
 ndg-httpsclient==0.5.1
-numpy==1.17.0
+numpy==1.22.0
 pandas==0.25.0
 plotly==4.0.0
 pyasn1==0.4.5
